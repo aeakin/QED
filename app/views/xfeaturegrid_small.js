@@ -32,22 +32,32 @@ module.exports = Backbone.View.extend({
                 ROWS.push(k);
             });
         });
+        
+        var rowdata = [];
         _.each(data, function(data_item) {
             var cancer = data_item.get("cancer");
-            var pwpv = data_item.get("pwpv");
-            var row_values = _.values(pwpv);
-            _.each(row_values, function(row_value) {
+            _.each(_.values(data_item.get("pwpv")), function(row_value) {
                 var cancers = [];
                 _.each(row_value, function() {
                     cancers.push(cancer);
                 });
-                DATA.push(cancers);
-                DATA.push(_.map(row_value, function(rv, rvk) {
+                rowdata.push(cancers);
+            });
+        });
+        var CANCERS = _.compact(_.flatten(rowdata));
+        DATA.push(_.compact(_.flatten(rowdata)));
 
+        _.each(data, function(data_item) {
+            rowdata = [];
+            _.each(_.values(data_item.get("pwpv")), function(row_value) {
+                var cancer = data_item.get("cancer");
+                rowdata.push(_.map(row_value, function(rv, rvk) {
                     COLUMNS.push(rvk);
+                    console.log(cancer + ":" + rvk + ":" + JSON.stringify(rv));
                     return rv["mlog10p"];
                 }));
             });
+            DATA.push(_.compact(_.flatten(rowdata)));
         });
 
         var model = new Backbone.Model({
