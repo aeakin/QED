@@ -49,11 +49,11 @@ module.exports = Backbone.View.extend({
 
         _.each(data, function(data_item) {
             rowdata = [];
-            _.each(_.values(data_item.get("pwpv")), function(row_value) {
+            _.each(data_item.get("pwpv"), function(row_value, rk) {
                 var cancer = data_item.get("cancer");
                 rowdata.push(_.map(row_value, function(rv, rvk) {
                     COLUMNS.push(rvk);
-                    console.log(cancer + ":" + rvk + ":" + JSON.stringify(rv));
+                    console.log(cancer + ":[" + rk + "]<=>[" + rvk + "]=" + rv["mlog10p"]);
                     return rv["mlog10p"];
                 }));
             });
