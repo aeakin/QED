@@ -50,6 +50,12 @@ module.exports = Backbone.Model.extend({
     fetch: function (options) {
         _.extend(this, options);
 
+        if (_.isEmpty(this.genes)) {
+            this.genes = ["TP53", "CTCF"];
+        }
+        if (_.isEmpty(this.cancers)) {
+            this.cancers = ["BRCA", "COADREAD", "GBM", "KIRC", "LAML", "LUAD", "LUSC", "OV", "PRAD", "STAD", "UCEC"];
+        }
         // TODO :: Fetch all gene combinations a priori?
         var gene1 = this.genes[0];
         var gene2 = this.genes[1];
